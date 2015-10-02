@@ -36,7 +36,6 @@ ADD ./patches/etc/ /etc/
 RUN systemctl enable \
 	oc-generate-ssh-keys \
 	oc-fetch-ssh-keys \
-	oc-add-extra-volumes \
 	oc-sync-kernel-modules
 
 
