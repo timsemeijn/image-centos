@@ -14,13 +14,25 @@ ENV SCW_BASE_IMAGE scaleway/centos:latest
 
 
 # Adding and calling builder-enter
+COPY ./overlay-${ARCH}/etc/yum.repos.d/ /etc/yum.repos.d/
 COPY ./overlay-image-tools/usr/local/sbin/scw-builder-enter /usr/local/sbin
-RUN yum install -y redhat-lsb-core \
- && yum clean all \
- && /bin/sh -e /usr/local/sbin/scw-builder-enter
+RUN set -e; case "${ARCH}" in \
+    armv7l|armhf|arm) \
+        touch /tmp/lsb-release; \
+	chmod +x /tmp/lsb-release; \
+	PATH="$PATH:/tmp" /bin/sh -e /usr/local/sbin/scw-builder-enter; \
+	rm -f /tmp/lsb-release; \
+      ;; \
+    x86_64|amd64) \
+        yum install -y redhat-lsb-core; \
+        /bin/sh -e /usr/local/sbin/scw-builder-enter; \
+        yum clean all; \
+      ;; \
+    esac
 
 
-RUN yum install -y \
+RUN if [ "$ARCH" = "armv7l" ]; then YUM_OPTS=--nogpg; fi \
+ && yum install ${YUM_OPTS} -y \
       bash \
       bash-completion \
       ca-certificates \
