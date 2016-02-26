@@ -1,14 +1,22 @@
 NAME =			centos
-VERSION =		7
-VERSION_ALIASES =	merlinthp-2015-03-16 latest
+VERSION =		latest
+VERSION_ALIASES =	7.2.1511 7.2 7
 TITLE =			CentOS 7
 DESCRIPTION =		CentOS 7
 SOURCE_URL =		https://github.com/scaleway/image-centos
 VENDOR_URL =		https://www.centos.org/
+DEFAULT_IMAGE_ARCH =	x86_64
+
 
 IMAGE_VOLUME_SIZE =	50G
 IMAGE_BOOTSCRIPT =	latest
 IMAGE_NAME =		CentOS 7 (beta)
+
+
+# This is specific to distribution images
+# -- to fetch latest code, run 'make sync-image-tools'
+IMAGE_TOOLS_FLAVORS =   systemd,common,docker-based
+IMAGE_TOOLS_CHECKOUT =  fd0041795b983779dca6557f964c7a77f7fa124e
 
 
 ## Image tools  (https://github.com/scaleway/image-tools)
