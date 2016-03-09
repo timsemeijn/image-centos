@@ -15,7 +15,7 @@ ENV SCW_BASE_IMAGE scaleway/centos:latest
 
 # Adding and calling builder-enter
 COPY ./overlay-${ARCH}/etc/yum.repos.d/ /etc/yum.repos.d/
-COPY ./overlay-image-tools/usr/local/sbin/scw-builder-enter /usr/local/sbin
+COPY ./overlay-image-tools/usr/local/sbin/scw-builder-enter /usr/local/sbin/
 RUN set -e; case "${ARCH}" in \
     armv7l|armhf|arm) \
         touch /tmp/lsb-release; \
