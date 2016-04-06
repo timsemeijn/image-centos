@@ -16,7 +16,7 @@ IMAGE_NAME =		CentOS 7 (beta)
 # This is specific to distribution images
 # -- to fetch latest code, run 'make sync-image-tools'
 IMAGE_TOOLS_FLAVORS =   systemd,common,docker-based
-IMAGE_TOOLS_CHECKOUT =  fd0041795b983779dca6557f964c7a77f7fa124e
+IMAGE_TOOLS_CHECKOUT =  764a58e59811d5f6217a3f71a4e009d6ec3e5138
 
 
 ## Image tools  (https://github.com/scaleway/image-tools)
