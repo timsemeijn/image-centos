@@ -75,5 +75,8 @@ RUN systemctl enable \
 	scw-sync-kernel-modules
 
 
+# Hotfix reboot
+RUN systemctl mask network
+
 # Clean rootfs from image-builder
 RUN /usr/local/sbin/scw-builder-leave
