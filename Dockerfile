@@ -40,6 +40,7 @@ RUN if [ "$ARCH" = "armv7l" ]; then YUM_OPTS=--nogpg; fi \
       curl \
       ethstatus \
       haveged \
+      htop \
       ioping \
       iotop \
       iperf \
