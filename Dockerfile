@@ -1,12 +1,12 @@
 ## -*- docker-image-name: "scaleway/centos:latest" -*-
-FROM multiarch/centos:7.2.1511-amd64-clean
+FROM multiarch/centos:7.3.1611-amd64-clean
 # following 'FROM' lines are used dynamically thanks do the image-builder
 # which dynamically update the Dockerfile if needed.
-#FROM multiarch/centos:7.2.1511-armhfp-clean    # arch=armv7l
-#FROM multiarch/centos:7.2.1511-aarch64-clean   # arch=arm64
-#FROM multiarch/centos:7.2.1511-i386-clean      # arch=i386
-#FROM multiarch/centos:7.2.1511-ppc64-clean     # arch=ppc64
-#FROM multiarch/centos:7.2.1511-ppc64le-clean   # arch=ppc64le
+#FROM multiarch/centos:7.3.1611-armhfp-clean    # arch=armv7l
+#FROM multiarch/centos:7.3.1611-aarch64-clean   # arch=arm64
+#FROM multiarch/centos:7.3.1611-i386-clean      # arch=i386
+#FROM multiarch/centos:7.3.1611-ppc64-clean     # arch=ppc64
+#FROM multiarch/centos:7.3.1611-ppc64le-clean   # arch=ppc64le
 
 
 # Environment
