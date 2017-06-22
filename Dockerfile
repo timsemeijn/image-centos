@@ -23,7 +23,7 @@ RUN set -e; case "${ARCH}" in \
 	PATH="$PATH:/tmp" /bin/sh -e /usr/local/sbin/scw-builder-enter; \
 	rm -f /tmp/lsb-release; \
       ;; \
-    x86_64|amd64) \
+    x86_64|amd64|arm64) \
         yum install -y redhat-lsb-core; \
         /bin/sh -e /usr/local/sbin/scw-builder-enter; \
         yum clean all; \
@@ -75,6 +75,12 @@ RUN systemctl enable \
 	scw-kernel-check \
 	scw-sync-kernel-modules
 
+# Avoid duplicate the same action (with scw-generate-ssh-keys)
+RUN systemctl mask sshd-keygen.service
+
+# This Centos service is not compatible with Scaleway kernel
+# kdumpctl[1213]: Kdump is not supported on this kernel
+RUN systemctl mask kdump.service
 
 # Hotfix reboot
 RUN systemctl mask network
