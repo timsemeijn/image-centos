@@ -16,6 +16,7 @@ ENV SCW_BASE_IMAGE scaleway/centos:latest
 # Adding and calling builder-enter
 COPY ./overlay-${ARCH}/etc/yum.repos.d/ /etc/yum.repos.d/
 COPY ./overlay-image-tools/usr/local/sbin/scw-builder-enter /usr/local/sbin/
+RUN yum install -y yum-plugin-ovl
 RUN set -e; case "${ARCH}" in \
     armv7l|armhf|arm) \
         touch /tmp/lsb-release; \
@@ -66,6 +67,8 @@ RUN if [ "$ARCH" = "armv7l" ]; then YUM_OPTS=--nogpg; fi \
 # Patch rootfs
 COPY ./overlay-image-tools ./overlay ./overlay-${ARCH} /
 
+# Remove root password
+RUN passwd -d root
 
 # Enable Scaleway services
 RUN systemctl enable \
