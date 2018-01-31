@@ -1,0 +1,9 @@
+IMAGE_NAME = centos
+IMAGE_VERSION = latest
+IMAGE_VERSION_ALIASES =	7.3.1611 7.3 7
+IMAGE_TITLE = CentOS 7.3
+IMAGE_DESCRIPTION = CentOS 7.3
+IMAGE_SOURCE_URL = https://github.com/scaleway/image-centos
+IMAGE_VENDOR_URL = https://www.centos.org/
+IMAGE_BOOTSCRIPT =	mainline 4.4
+IMAGE_BASE_FLAVORS = systemd common docker-based

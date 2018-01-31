@@ -15,7 +15,7 @@ ENV SCW_BASE_IMAGE scaleway/centos:latest
 
 # Adding and calling builder-enter
 COPY ./overlay-${ARCH}/etc/yum.repos.d/ /etc/yum.repos.d/
-COPY ./overlay-image-tools/usr/local/sbin/scw-builder-enter /usr/local/sbin/
+COPY ./overlay-base/usr/local/sbin/scw-builder-enter /usr/local/sbin/
 RUN yum install -y yum-plugin-ovl
 RUN set -e; case "${ARCH}" in \
     armv7l|armhf|arm) \
@@ -65,7 +65,7 @@ RUN if [ "$ARCH" = "armv7l" ]; then YUM_OPTS=--nogpg; fi \
 
 
 # Patch rootfs
-COPY ./overlay-image-tools ./overlay ./overlay-${ARCH} /
+COPY ./overlay-base ./overlay ./overlay-${ARCH} /
 
 # Remove root password
 RUN passwd -d root
@@ -76,7 +76,8 @@ RUN systemctl enable \
 	scw-fetch-ssh-keys \
 	scw-gen-machine-id \
 	scw-kernel-check \
-	scw-sync-kernel-modules
+	scw-sync-kernel-modules \
+  scw-signal-booted
 
 # Avoid duplicate the same action (with scw-generate-ssh-keys)
 RUN systemctl mask sshd-keygen.service
