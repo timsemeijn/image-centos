@@ -1,9 +1,0 @@
-{
-    "7.3": {
-        "directory": "centos-7.3",
-        "architectures": [
-            "arm64", "x86_64"
-        ],
-        "marketplace-id": "260b68bc-533c-4432-9a43-7178fc76ee02"
-    }
-}
