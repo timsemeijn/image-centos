@@ -1,6 +1,6 @@
 ## -*- docker-image-name: "scaleway/centos:latest" -*-
 ARG MULTIARCH_ARCH
-FROM multiarch/centos:7.3.1611-${MULTIARCH_ARCH}-clean
+FROM multiarch/centos:${MULTIARCH_ARCH}-clean
 
 
 # Environment

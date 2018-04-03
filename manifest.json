@@ -1,7 +1,7 @@
 {
   "images": {
-    "7.3": {
-      "directory": "centos-7.3",
+    "latest": {
+      "directory": "latest",
       "architectures": [
         "arm64", "x86_64"
       ],
