@@ -2,7 +2,9 @@
 
 NETCONFIG_PATH=/etc/sysconfig/network-scripts
 
-find ${NETCONFIG_PATH} -name "ifcfg-*" -type f | xargs egrep -i -L "lo|USER" | xargs rm
+if [ $(find ${NETCONFIG_PATH} -name "ifcfg-*" -type f | xargs egrep -i -L "lo|USER" | wc -w) -ne 0 ]; then
+	find ${NETCONFIG_PATH} -name "ifcfg-*" -type f | xargs egrep -i -L "lo|USER" | xargs rm
+fi
 for iface in $(ls /sys/class/net); do
     # Only configure physical interfaces
     if readlink /sys/class/net/$iface | grep --invert-match --silent 'virtual'; then

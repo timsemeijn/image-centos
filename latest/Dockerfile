@@ -80,7 +80,8 @@ RUN systemctl enable \
 	scw-gen-machine-id \
 	scw-kernel-check \
 	scw-sync-kernel-modules \
-	scw-signal-booted
+	scw-signal-booted \
+	scw-generate-net-config
 
 # Avoid duplicate the same action (with scw-generate-ssh-keys)
 RUN systemctl mask sshd-keygen.service
