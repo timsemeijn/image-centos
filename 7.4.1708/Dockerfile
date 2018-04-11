@@ -1,19 +1,16 @@
-## -*- docker-image-name: "scaleway/centos:latest" -*-
-ARG MULTIARCH_ARCH
-FROM multiarch/centos:${MULTIARCH_ARCH}-clean
-
+## -*- docker-image-name: "scaleway/centos:7.4.1708" -*-
+FROM library/centos:7.4.1708
 
 # Environment
 ENV SCW_BASE_IMAGE scaleway/centos:latest
 
-
 # Adding and calling builder-enter
-COPY ./overlay-${ARCH}/etc/yum.repos.d/ /etc/yum.repos.d/
 COPY ./overlay-base/usr/local/sbin/scw-signal-state /usr/local/sbin/
 COPY ./overlay-base/etc/systemd/system/scw-signal-booted.service /etc/systemd/system/
 COPY ./overlay-image-tools/usr/local/sbin/scw-builder-enter /usr/local/sbin/
+COPY ./overlay/etc/dracut.conf /etc/
 RUN yum install -y yum-plugin-ovl
-RUN set -e; case "${ARCH}" in \
+RUN set -e; case "$(arch)" in \
 	armv7l|armhf|arm) \
 	  touch /tmp/lsb-release; \
 	chmod +x /tmp/lsb-release; \
@@ -28,36 +25,18 @@ RUN set -e; case "${ARCH}" in \
 	esac
 
 
-RUN if [ "$ARCH" = "armv7l" ]; then YUM_OPTS=--nogpg; fi \
+RUN if [ "$(arch)" = "armv7l" ]; then YUM_OPTS=--nogpg; fi \
  && yum install ${YUM_OPTS} -y \
-	bash \
-	bash-completion \
-	ca-certificates \
-	cron \
 	curl \
-	ethstatus \
-	haveged \
-	htop \
-	ioping \
-	iotop \
-	iperf \
+	dhclient \
 	kernel \
-	locate \
-	make \
-	mg \
-	ntp \
-	ntpdate \
-	rsync \
-	screen \
-	socat \
-	ssh \
+	initscripts \
+	openssh-clients \
+	openssh-server \
+	passwd \
+	selinux-policy \
+	selinux-policy-targeted \
 	sudo \
-	sysstat \
-	tar \
-	tcpdump \
-	tmux \
-	vim \
-	wget \
 	&& case $(arch) in \
 	x86_64) GRUB_ARCH="x64" ;;\
 	i686) GRUB_ARCH="ia32" ;;\
@@ -68,7 +47,7 @@ RUN if [ "$ARCH" = "armv7l" ]; then YUM_OPTS=--nogpg; fi \
 
 
 # Patch rootfs
-COPY ./overlay-image-tools ./overlay-base ./overlay ./overlay-${ARCH} /
+COPY ./overlay-image-tools ./overlay-base ./overlay /
 
 # Enable Scaleway services
 RUN systemctl enable \
@@ -85,8 +64,8 @@ RUN systemctl enable \
 # Avoid duplicate the same action (with scw-generate-ssh-keys)
 RUN systemctl mask sshd-keygen.service
 
-# fix the serial console speed in /etc/default/grub because grub2-tools does it wrong
-RUN sed -i 's/115200/9600/g' /etc/default/grub
+# Disable network zeroconf; breaks scw-signal-state
+RUN if [ $(grep -c NOZEROCONF /etc/sysconfig/network) -eq 0 ]; then echo "NOZEROCONF=yes" >> /etc/sysconfig/network; fi
 
 # Uncomment to disable SELinux on a local boot instance
 #RUN sed -i 's/SELINUX=enforcing/SELINUX=permissive/' /etc/selinux/config
