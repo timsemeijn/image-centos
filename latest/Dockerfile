@@ -14,18 +14,18 @@ COPY ./overlay-base/etc/systemd/system/scw-signal-booted.service /etc/systemd/sy
 COPY ./overlay-image-tools/usr/local/sbin/scw-builder-enter /usr/local/sbin/
 RUN yum install -y yum-plugin-ovl
 RUN set -e; case "${ARCH}" in \
-    armv7l|armhf|arm) \
+	armv7l|armhf|arm) \
 	  touch /tmp/lsb-release; \
 	chmod +x /tmp/lsb-release; \
 	PATH="$PATH:/tmp" /bin/sh -e /usr/local/sbin/scw-builder-enter; \
 	rm -f /tmp/lsb-release; \
 	;; \
-    x86_64|amd64|aarch64) \
+	x86_64|amd64|aarch64) \
 	  yum install -y redhat-lsb-core; \
 	  /bin/sh -e /usr/local/sbin/scw-builder-enter; \
 	  yum clean all; \
 	;; \
-    esac
+	esac
 
 
 RUN if [ "$ARCH" = "armv7l" ]; then YUM_OPTS=--nogpg; fi \
@@ -68,10 +68,7 @@ RUN if [ "$ARCH" = "armv7l" ]; then YUM_OPTS=--nogpg; fi \
 
 
 # Patch rootfs
-COPY ./overlay-image-tools ./overlay ./overlay-${ARCH} /
-
-# Remove root password
-RUN passwd -d root
+COPY ./overlay-image-tools ./overlay-base ./overlay ./overlay-${ARCH} /
 
 # Enable Scaleway services
 RUN systemctl enable \
@@ -81,7 +78,9 @@ RUN systemctl enable \
 	scw-kernel-check \
 	scw-sync-kernel-modules \
 	scw-signal-booted \
-	scw-generate-net-config
+	scw-generate-net-config \
+	scw-generate-root-passwd \
+	scw-set-hostname
 
 # Avoid duplicate the same action (with scw-generate-ssh-keys)
 RUN systemctl mask sshd-keygen.service
@@ -90,7 +89,7 @@ RUN systemctl mask sshd-keygen.service
 RUN sed -i 's/115200/9600/g' /etc/default/grub
 
 # Uncomment to disable SELinux on a local boot instance
-#RUN sed -i 's/^\(GRUB_CMDLINE_LINUX.*\)"$/\1 selinux=0"/' /etc/default/grub
+#RUN sed -i 's/SELINUX=enforcing/SELINUX=permissive/' /etc/selinux/config
 
 # This Centos service is not compatible with Scaleway kernel
 # kdumpctl[1213]: Kdump is not supported on this kernel
