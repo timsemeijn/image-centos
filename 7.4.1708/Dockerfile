@@ -67,6 +67,9 @@ RUN systemctl mask sshd-keygen.service
 # Disable network zeroconf; breaks scw-signal-state
 RUN if [ $(grep -c NOZEROCONF /etc/sysconfig/network) -eq 0 ]; then echo "NOZEROCONF=yes" >> /etc/sysconfig/network; fi
 
+# Correct permissions on /root/.ssh
+RUN mkdir -p /root/.ssh && chmod 0700 /root/.ssh
+
 # Uncomment to disable SELinux on a local boot instance
 #RUN sed -i 's/SELINUX=enforcing/SELINUX=permissive/' /etc/selinux/config
 
