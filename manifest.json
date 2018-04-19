@@ -1,11 +1,11 @@
 {
   "images": {
-    "latest": {
-      "directory": "latest",
+    "centos7": {
+      "directory": "7.4.1708",
       "architectures": [
-        "arm64", "x86_64"
+        "x86_64"
       ],
-      "marketplace-id": "260b68bc-533c-4432-9a43-7178fc76ee02"
+      "marketplace-id": "98fc244a-ed4c-4523-bd17-b9c4070b8e7e"
     }
   }
 }
