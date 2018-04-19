@@ -1,5 +1,5 @@
 ## -*- docker-image-name: "scaleway/centos:7.4.1708" -*-
-FROM library/centos:7.4.1708
+FROM library/centos:centos7
 
 # Environment
 ENV SCW_BASE_IMAGE scaleway/centos:latest
