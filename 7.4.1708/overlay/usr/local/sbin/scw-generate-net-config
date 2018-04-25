@@ -18,11 +18,6 @@ DEVICE=\"$iface\"
 ONBOOT=\"yes\"
 PERSISTENT_DHCLIENT=\"1\"
 NM_CONTROLLED=\"no\"
-# Uncomment to enable IPv6
-#IPV6INIT=\"yes\"
-#IPV6_AUTOCONF=\"yes\"
-#IPV6_DEFROUTE=\"yes\"
-#IPV6_FAILURE_FATAL=\"no\"
 " > ${NETCONFIG_PATH}/ifcfg-${iface}
     fi
 
