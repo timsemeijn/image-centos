@@ -1,6 +1,6 @@
 {
   "images": {
-    "centos7": {
+    "7": {
       "directory": "7.4.1708",
       "architectures": [
         "x86_64"
