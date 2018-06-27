@@ -24,11 +24,14 @@ RUN set -e; case "$(arch)" in \
 	;; \
 	esac
 
+RUN yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm; \
+    yum install -y https://github.com/scaleway/image-tools/releases/download/cloud-init/cloud-init-18.2.5.g01ff5c2e.scaleway-1.fc28.noarch.rpm
 
 RUN if [ "$(arch)" = "armv7l" ]; then YUM_OPTS=--nogpg; fi \
  && yum install ${YUM_OPTS} -y \
 	curl \
 	dhclient \
+        dmidecode \
 	kernel \
 	initscripts \
 	openssh-clients \
@@ -62,8 +65,12 @@ RUN systemctl enable \
 	scw-generate-root-passwd \
 	scw-set-hostname
 
-# Avoid duplicate the same action (with scw-generate-ssh-keys)
-RUN systemctl mask sshd-keygen.service
+# Disable systemd units that are handled by cloud-init
+RUN cd /etc/systemd/system && for I in $(ls scw* | egrep -v 'gen-machine-id|generate-root-passwd');do systemctl disable $I;done
+
+# Enable root login to stay backward-compatible
+# Otherwise cloud-init disables it
+RUN sed -i 's/disable_root: true/disable_root: false/' /etc/cloud/cloud.cfg
 
 # Disable network zeroconf; breaks scw-signal-state
 RUN if [ $(grep -c NOZEROCONF /etc/sysconfig/network) -eq 0 ]; then echo "NOZEROCONF=yes" >> /etc/sysconfig/network; fi
