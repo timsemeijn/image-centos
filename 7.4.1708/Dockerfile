@@ -25,7 +25,7 @@ RUN set -e; case "$(arch)" in \
 	esac
 
 RUN yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm; \
-    yum install -y https://github.com/scaleway/image-tools/releases/download/cloud-init/cloud-init-18.2.5.g01ff5c2e.scaleway-1.fc28.noarch.rpm
+    yum install -y https://github.com/scaleway/image-tools/releases/download/cloud-init-18.3%2B9.g2e62cb8a/cloud-init-18.3+9.g2e62cb8a.scaleway-1.fc28.noarch.rpm
 
 RUN if [ "$(arch)" = "armv7l" ]; then YUM_OPTS=--nogpg; fi \
  && yum install ${YUM_OPTS} -y \
@@ -68,10 +68,6 @@ RUN systemctl enable \
 # Configure Systemd
 RUN systemctl set-default multi-user
 RUN systemctl preset --preset-mode=full $(cat /etc/systemd/system-preset/*scw*.preset | cut -d' ' -f2 | tr '\n' ' ')
-
-# Enable root login to stay backward-compatible
-# Otherwise cloud-init disables it
-RUN sed -i 's/disable_root: true/disable_root: false/' /etc/cloud/cloud.cfg
 
 # Disable network zeroconf; breaks scw-signal-state
 RUN if [ $(grep -c NOZEROCONF /etc/sysconfig/network) -eq 0 ]; then echo "NOZEROCONF=yes" >> /etc/sysconfig/network; fi
