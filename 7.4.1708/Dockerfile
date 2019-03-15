@@ -40,6 +40,8 @@ RUN if [ "$(arch)" = "armv7l" ]; then YUM_OPTS=--nogpg; fi \
 	selinux-policy \
 	selinux-policy-targeted \
 	sudo \
+	gdisk \
+	cloud-utils-growpart \
 	&& case $(arch) in \
 	x86_64) GRUB_ARCH="x64" ;;\
 	i686) GRUB_ARCH="ia32" ;;\
