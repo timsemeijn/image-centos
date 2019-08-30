@@ -5,5 +5,5 @@ IMAGE_TITLE = CentOS 7.4
 IMAGE_DESCRIPTION = CentOS 7.4
 IMAGE_SOURCE_URL = https://github.com/scaleway/image-centos
 IMAGE_VENDOR_URL = https://www.centos.org/
-IMAGE_BOOTSCRIPT =	mainline 4.4
+IMAGE_BOOTSCRIPT =	longterm 4.4 latest
 IMAGE_BASE_FLAVORS = systemd common docker-based
