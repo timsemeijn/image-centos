@@ -1,0 +1,9 @@
+IMAGE_NAME = centos
+IMAGE_VERSION = 8.1.1911
+IMAGE_VERSION_ALIASES =	8.1 8
+IMAGE_TITLE = CentOS 8.1
+IMAGE_DESCRIPTION = CentOS 8.1
+IMAGE_SOURCE_URL = https://github.com/scaleway/image-centos
+IMAGE_VENDOR_URL = https://www.centos.org/
+IMAGE_BOOTSCRIPT =	longterm 4.15 latest
+IMAGE_BASE_FLAVORS = systemd common docker-based

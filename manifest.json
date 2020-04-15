@@ -6,6 +6,13 @@
         "x86_64"
       ],
       "marketplace-id": "98fc244a-ed4c-4523-bd17-b9c4070b8e7e"
+    },
+    "8": {
+      "directory": "8",
+      "architectures": [
+        "arm64v8", "amd64"
+      ],
+      "marketplace-id": ""
     }
   }
 }
