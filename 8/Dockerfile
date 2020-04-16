@@ -1,5 +1,5 @@
 ## -*- docker-image-name: "scaleway/centos:7.4.1708" -*-
-FROM ${DOCKER_ARCH}/centos:8.1.1911
+FROM centos:8.1.1911
 
 # Environment
 ENV SCW_BASE_IMAGE scaleway/centos:latest
@@ -9,7 +9,8 @@ COPY ./overlay-base/usr/local/sbin/scw-signal-state /usr/local/sbin/
 COPY ./overlay-base/etc/systemd/system/scw-signal-booted.service /etc/systemd/system/
 COPY ./overlay-image-tools/usr/local/sbin/scw-builder-enter /usr/local/sbin/
 COPY ./overlay/etc/dracut.conf /etc/
-RUN yum install -y yum-plugin-ovl
+RUN dnf install -y epel-release
+RUN dnf install -y dnf-plugin-ovl
 RUN set -e; case "$(arch)" in \
 	arm64v8|armhf|arm) \
 	  touch /tmp/lsb-release; \
@@ -18,17 +19,16 @@ RUN set -e; case "$(arch)" in \
 	rm -f /tmp/lsb-release; \
 	;; \
 	x86_64|amd64|aarch64) \
-	  yum install -y redhat-lsb-core; \
+	  dnf install -y redhat-lsb-core; \
 	  /bin/sh -e /usr/local/sbin/scw-builder-enter; \
-	  yum clean all; \
+	  dnf clean all; \
 	;; \
 	esac
 
-RUN yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm; \
-    yum install -y https://github.com/scaleway/image-tools/releases/download/cloud-init-18.3%2B24.gf6249277/cloud-init-18.3+24.gf6249277.scaleway-1.el7.centos.noarch.rpm
+RUN dnf install -y cloud-init
 
 RUN if [ "$(arch)" = "arm64v8" ]; then YUM_OPTS=--nogpg; fi \
- && yum install ${YUM_OPTS} -y \
+ && dnf install ${YUM_OPTS} -y \
 	curl \
 	dhclient \
 	dmidecode \
@@ -45,8 +45,8 @@ RUN if [ "$(arch)" = "arm64v8" ]; then YUM_OPTS=--nogpg; fi \
 	i686) GRUB_ARCH="ia32" ;;\
 	aarch64) GRUB_ARCH="aa64" ;;\
 	esac \
-	&& yum install ${YUM_OPTS} -y grub2-efi-"$GRUB_ARCH" grub2-efi-modules grub2 grub2-pc \
-	&& yum clean all
+	&& dnf install ${YUM_OPTS} -y grub2-efi-"$GRUB_ARCH" grub2-efi-modules grub2 grub2-pc \
+	&& dnf clean all
 
 
 # Patch rootfs
